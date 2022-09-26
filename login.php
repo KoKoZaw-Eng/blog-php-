@@ -24,7 +24,7 @@ if (!empty($_POST)) {
         $_SESSION['user_name'] = $user['name'];
         $_SESSION['logged_in'] = time();
 
-        header('Location: admin/index.php');
+        header('Location: index.php');
       }
     }else{
       echo "<script>alert('Incorrect Email or Password. Please Try Again.')</script>";
