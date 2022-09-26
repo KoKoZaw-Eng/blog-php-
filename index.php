@@ -1,3 +1,15 @@
+<?php 
+require 'config.php';
+
+session_start();
+
+if (empty($_SESSION['user_id']) and empty($_SESSION['user_name']) and empty($_SESSION['logged_in'])) {
+  header("Location: login.php");
+
+}
+
+ ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,112 +31,46 @@
   <div class="content-header">
     <h1 class="text-center">Blog Posts</h1>
   </div>
+  <?php 
+  $sql = "SELECT * FROM posts ORDER BY id DESC";
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute();
+
+  $result = $stmt->fetchAll();
+
+   ?>
   <div class="row">
-    <div class="col-md-4">
-      <!-- Box Comment -->
-      <div class="card card-widget">
-        <div class="card-header">
-          <h1 class="h4 text-center">Blog Title</h1>
-        </div>
-        <!-- /.card-header -->
-        <div class="card-body">
-          <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
+    <?php 
+    if ($result) {
+      foreach ($result as $value) { ?>
+        <div class="col-md-4">
+          <!-- Box Comment -->
+          <div class="card card-widget">
+            <div class="card-header text-secondary">
+              <h1 class="h4 text-center"><?php echo $value['title']; ?></h1>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <a href="detail.php?id=<?php echo $value['id']; ?>">
+                <img class="img-fluid pad" src="admin/images/<?php echo $value['image']; ?>" alt="Photo">
+              </a>
 
-          <p>I took this photo this morning. What do you guys think?</p>
+              <p><?php echo substr($value['content'], 0,90) ?>
+                <a class="float-right" href="detail.php?id=<?php echo $value['id']; ?>">More Detail...</a>
+              </p>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
         </div>
-        <!-- /.card-body -->
-      </div>
-      <!-- /.card -->
-    </div>
-    <!-- /.col -->
-    <div class="col-md-4">
-      <!-- Box Comment -->
-      <div class="card card-widget">
-        <div class="card-header">
-          <h1 class="h4 text-center">Blog Title</h1>
-        </div>
-        <!-- /.card-header -->
-        <div class="card-body">
-          <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
+        <!-- /.col -->
 
-          <p>I took this photo this morning. What do you guys think?</p>
-        </div>
-        <!-- /.card-body -->
-      </div>
-      <!-- /.card -->
-    </div>
-    <!-- /.col -->
-    <div class="col-md-4">
-      <!-- Box Comment -->
-      <div class="card card-widget">
-        <div class="card-header">
-          <h1 class="h4 text-center">Blog Title</h1>
-        </div>
-        <!-- /.card-header -->
-        <div class="card-body">
-          <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
 
-          <p>I took this photo this morning. What do you guys think?</p>
-        </div>
-        <!-- /.card-body -->
-      </div>
-      <!-- /.card -->
-    </div>
-    <!-- /.col -->
-  </div>
-  <!-- /.row -->
-  <div class="row">
-    <div class="col-md-4">
-      <!-- Box Comment -->
-      <div class="card card-widget">
-        <div class="card-header">
-          <h1 class="h4 text-center">Blog Title</h1>
-        </div>
-        <!-- /.card-header -->
-        <div class="card-body">
-          <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
+    <?php
+      }
+    }
 
-          <p>I took this photo this morning. What do you guys think?</p>
-        </div>
-        <!-- /.card-body -->
-      </div>
-      <!-- /.card -->
-    </div>
-    <!-- /.col -->
-    <div class="col-md-4">
-      <!-- Box Comment -->
-      <div class="card card-widget">
-        <div class="card-header">
-          <h1 class="h4 text-center">Blog Title</h1>
-        </div>
-        <!-- /.card-header -->
-        <div class="card-body">
-          <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
-
-          <p>I took this photo this morning. What do you guys think?</p>
-        </div>
-        <!-- /.card-body -->
-      </div>
-      <!-- /.card -->
-    </div>
-    <!-- /.col -->
-    <div class="col-md-4">
-      <!-- Box Comment -->
-      <div class="card card-widget">
-        <div class="card-header">
-          <h1 class="h4 text-center">Blog Title</h1>
-        </div>
-        <!-- /.card-header -->
-        <div class="card-body">
-          <img class="img-fluid pad" src="dist/img/photo2.png" alt="Photo">
-
-          <p>I took this photo this morning. What do you guys think?</p>
-        </div>
-        <!-- /.card-body -->
-      </div>
-      <!-- /.card -->
-    </div>
-    <!-- /.col -->
+     ?>
   </div>
   <!-- /.row -->
 <!-- Main Footer -->
