@@ -69,7 +69,11 @@ if (!empty($_GET)) {
       <!-- Box Comment -->
       <div class="card card-widget">
         <div class="card-header">
-          <h1 class="h4 text-center"><?php echo $result[0]['title']; ?></h1>
+          <h1 class="h4 text-center"><?php echo $result[0]['title']; ?>
+          <div class="float-left">
+            <a class="btn btn-secondary" href="index.php">Back</a>
+          </div>
+          </h1>
         </div>
           <!-- /.user-block -->
         </div>

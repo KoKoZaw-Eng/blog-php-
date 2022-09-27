@@ -29,7 +29,11 @@ if (empty($_SESSION['user_id']) and empty($_SESSION['user_name']) and empty($_SE
 <body>
 <div class="container-fluid">
   <div class="content-header">
-    <h1 class="text-center">Blog Posts</h1>
+    <h1 class="text-center">Blog Posts
+    <div class="float-right">
+      <a class="btn btn-secondary" href="logout.php">Logout</a>
+    </div>
+    </h1>
   </div>
   <?php 
   $sql = "SELECT * FROM posts ORDER BY id DESC";
