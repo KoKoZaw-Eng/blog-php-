@@ -82,7 +82,9 @@ if (empty($_SESSION['user_id']) and empty($_SESSION['user_name']) and empty($_SE
     <!-- Default to the left -->
     <strong>Copyright &copy; 2022 <a href="#">eMRTech</a>.</strong> All rights reserved.
   </footer>
-  
+  <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </a>
 </div>
 <!-- ./Container-Fluid -->
 
