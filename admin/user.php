@@ -3,6 +3,15 @@
 require 'config/config.php';
 require 'config/auth.php';
 
+if (!empty($_POST['search'])) {
+  setcookie('search', $_POST['search'], time() + (86400 * 30), "/"); // 86400 = 1 day
+}else{
+  if (!empty($_GET['pageno'])) {
+    unset($_COOKIE['search']); 
+    setcookie('search', null, -1, '/'); 
+  }
+}
+
  ?>
 
 <?php include 'header.html'; ?><!-- Header Section -->
@@ -32,7 +41,7 @@ require 'config/auth.php';
                   $offset = ($pageno - 1) * $numOfrecs;
 
                   // Condition for Search
-                  if (empty($_POST['search'])) {
+                  if (empty($_POST['search']) and empty($_COOKIE['search'])) {
 
                     //Page Number
                     $sql = "SELECT * FROM users ORDER BY id DESC";
@@ -49,8 +58,12 @@ require 'config/auth.php';
                     $result= $stmt->fetchAll();
                   }else{
                     
-                    $searchKey = $_POST['search'];
-                    $sql = "SELECT * FROM users WHERE title LIKE '%$searchKey%' ORDER BY id DESC";
+                    if (!empty($_POST['search'])) {
+                      $searchKey = $_POST['search'];
+                    }else{
+                      $searchKey = $_COOKIE['search'];
+                    }
+                    $sql = "SELECT * FROM users WHERE name LIKE '%$searchKey%' ORDER BY id DESC";
                     $stmt = $pdo->prepare($sql);
                     $stmt->execute();
                     $rawResult = $stmt->fetchAll();
@@ -58,7 +71,7 @@ require 'config/auth.php';
                     $total_pages = ceil(count($rawResult) / $numOfrecs);
 
                     
-                    $sql = "SELECT * FROM users WHERE title LIKE '%$searchKey%' ORDER BY id DESC LIMIT $offset,$numOfrecs";
+                    $sql = "SELECT * FROM users WHERE name LIKE '%$searchKey%' ORDER BY id DESC LIMIT $offset,$numOfrecs";
                     $stmt = $pdo->prepare($sql);
                     $stmt->execute();
                     $result= $stmt->fetchAll();
