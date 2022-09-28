@@ -88,16 +88,30 @@ if (!empty($_GET)) {
         $comm = $pdo->prepare($sql);
         $comm->execute();
         $comResult = $comm->fetchAll();
+        // print'<pre>';
+        // print_r($comResult);
+        // exit();
+        $auResult = [];
+        if ($comResult) {
+          foreach ($comResult as $key => $value) {
+            $auId = $comResult[$key]['author_id'];
+            $sql = "SELECT * FROM users WHERE id=$auId";
+            $stmtau = $pdo->prepare($sql);
+            $stmtau->execute();
+            $auResult[] = $stmtau->fetchAll();
+
+          }
+        }
 
          ?>
         <div class="card-footer card-comments">
           <div class="card-comment">
             <?php 
             if ($comResult) {
-              foreach ($comResult as $value) { ?>
+              foreach ($comResult as $key => $value) { ?>
                 <div>
                   <span class="username">
-                    <?php echo $value['author_id']; ?>
+                    <?php echo $auResult[$key][0]['name']; ?>
                     <span class="text-muted float-right"><?php echo $value['created_at']; ?></span>
                   </span><!-- /.username -->
                   <?php echo $value['content']; ?>
