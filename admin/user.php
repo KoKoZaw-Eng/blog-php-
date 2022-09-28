@@ -98,7 +98,7 @@ require 'config/auth.php';
                           <td><a href="user-edit.php?id=<?php echo $value['id']; ?>" type="button" class="btn btn-warning">Edit</a>
                           </td>
                           <td><a href="user-del.php?id=<?php echo $value['id']; ?>"
-                          onclick="return confirm('Are you sure you want to delete this post?');"
+                          onclick="return confirm('Are you sure you want to delete this user?');"
                           type="button" class="btn btn-danger">Delete</a></td>
                         </tr>
                     <?php
