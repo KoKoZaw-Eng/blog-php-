@@ -21,14 +21,15 @@ if (!empty($_POST)) {
     window.location.href='user.php';</script>";
   }else{
 
-    $sql = "SELECT * FROM users WHERE email=:email";
+    $sql = "SELECT * FROM users WHERE email=:email AND id!=:id";
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':email',$email);
+    $stmt->bindValue(':id',$id);
     $stmt->execute();
 
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
-    if ($user and ($email != $_POST['email1'])) {
+    if ($user) {
       echo "<script>alert('Duplicated Email with another user');
       window.location.href='user.php';</script>";
     }else{
