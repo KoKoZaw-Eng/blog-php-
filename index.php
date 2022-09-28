@@ -35,8 +35,27 @@ if (empty($_SESSION['user_id']) and empty($_SESSION['user_name']) and empty($_SE
     </div>
     </h1>
   </div>
-  <?php 
+  <?php
+  if (!empty($_GET['pageno'])) {
+    $pageno = $_GET['pageno'];
+  }else{
+    $pageno = 1;
+  }
+  $numOfrecs = 3;
+  $offset = ($pageno - 1) * $numOfrecs; 
+
+
+  //For Counting for Raw Posts
   $sql = "SELECT * FROM posts ORDER BY id DESC";
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute();
+
+  $rawResult = $stmt->fetchAll();
+
+  $total_pages = ceil(count($rawResult) / $numOfrecs);
+  
+  //For Limit Post 
+  $sql = "SELECT * FROM posts ORDER BY id DESC LIMIT $offset,$numOfrecs";
   $stmt = $pdo->prepare($sql);
   $stmt->execute();
 
@@ -77,7 +96,24 @@ if (empty($_SESSION['user_id']) and empty($_SESSION['user_name']) and empty($_SE
      ?>
   </div>
   <!-- /.row -->
-<!-- Main Footer -->
+
+  <!-- Pagination -->
+  <div class="card-footer clearfix">
+    <ul class="pagination pagination-sm m-0 float-right">
+      <li class="page-item"><a class="page-link" href="?pageno=1">First</a></li>
+      <li class="page-item <?php if ($pageno <=1){echo 'disabled';} ?>">
+        <a class="page-link"
+        href="<?php if ($pageno<=1){echo '#';}else{echo "?pageno=".($pageno-1);}?>">Previous</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#"><?php echo $pageno; ?></a></li>
+      <li class="page-item <?php if ($pageno >= $total_pages){echo 'disabled';} ?>">
+        <a class="page-link" href="<?php if ($pageno>=$total_pages){echo '#';}else{echo "?pageno=".($pageno+1);} ?>">Next</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="?pageno=<?php echo $total_pages ?>">Last</a></li>
+    </ul>
+  </div> <!-- Pagination -->
+
+  <!-- Main Footer -->
   <footer class="main-footer text-center" style="margin-left: 0px !important;">
     <!-- Default to the left -->
     <strong>Copyright &copy; 2022 <a href="#">eMRTech</a>.</strong> All rights reserved.
