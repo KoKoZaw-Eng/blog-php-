@@ -19,7 +19,7 @@ require 'config/auth.php';
               <!-- /.card-header -->
               <div class="card-body">
                 <div>
-                  <a href="create.php" type="button" class="btn btn-primary">Create New User</a>
+                  <a href="user.php" type="button" class="btn btn-primary">Create New User</a>
                 </div><br>
                 <table class="table table-bordered text-center">
                   <?php
