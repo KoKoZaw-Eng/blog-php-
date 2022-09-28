@@ -5,8 +5,9 @@ require 'auth.php';
 
 if (!empty($_GET)) {
   $id = $_GET['id'];
-  $sql = "SELECT * FROM posts WHERE id=$id";
+  $sql = "SELECT * FROM posts WHERE id=:id";
   $stmt = $pdo->prepare($sql);
+  $stmt->bindValue(':id',$id);
   $stmt->execute();
 
   $result = $stmt->fetchAll();
@@ -84,8 +85,9 @@ if (!empty($_GET)) {
         <!-- /.card-body -->
 
         <?php 
-        $sql = "SELECT * FROM comments WHERE post_id=$id";
+        $sql = "SELECT * FROM comments WHERE post_id=:id";
         $comm = $pdo->prepare($sql);
+        $comm->bindValue(':id',$id);
         $comm->execute();
         $comResult = $comm->fetchAll();
         // print'<pre>';

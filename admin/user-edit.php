@@ -62,8 +62,9 @@ if (!empty($_POST)) {
               if (!empty($_GET)) {
                 $id = $_GET['id'];
 
-                $sql = "SELECT * FROM users WHERE id=$id";
+                $sql = "SELECT * FROM users WHERE id=:id";
                 $stmt = $pdo->prepare($sql);
+                $stmt->bindValue(':id',$id);
                 $stmt->execute();
 
                 $result = $stmt->fetchAll();
