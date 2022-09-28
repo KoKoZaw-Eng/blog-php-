@@ -22,6 +22,7 @@ if (!empty($_POST)) {
       if ($user['password'] === $password) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_name'] = $user['name'];
+        $_SESSION['user_role'] = $user['role'];
         $_SESSION['logged_in'] = time();
 
         header('Location: index.php');

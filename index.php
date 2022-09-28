@@ -2,8 +2,6 @@
 require 'config.php';
 require 'auth.php';
 
-
-
  ?>
 
 <!DOCTYPE html>
