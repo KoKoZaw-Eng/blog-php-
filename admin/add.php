@@ -4,32 +4,44 @@ require 'config/config.php';
 require 'config/auth.php';
 
 if (!empty($_POST)) {
-  $file = 'images/'.($_FILES['image']['name']);
-  $imageType = pathinfo($file,PATHINFO_EXTENSION);
-
-  if ($imageType != 'png' and $imageType != 'jpg' and $imageType != 'jpeg') {
-    echo "<script>alert('Image must be png, jpg, and jpeg.');
-    window.location.href='index.php';</script>";
+  if (empty($_POST['title']) || empty($_POST['content']) || empty($_POST['image'])) {
+    if (empty($_POST['title'])) {
+      $titleError = 'Title cannot be Null';
+    }
+    if (empty($_POST['content'])) {
+      $titleError = 'Content cannot be Null';
+    }
+    if (empty($_POST['image'])) {
+      $titleError = 'Image cannot be Null';
+    }
   }else{
-    $title = $_POST['title'];
-    $content = $_POST['content'];
-    $image = $_FILES['image']['name'];
+    $file = 'images/'.($_FILES['image']['name']);
+    $imageType = pathinfo($file,PATHINFO_EXTENSION);
 
-    move_uploaded_file($_FILES['image']['tmp_name'], $file);
+    if ($imageType != 'png' and $imageType != 'jpg' and $imageType != 'jpeg') {
+      echo "<script>alert('Image must be png, jpg, and jpeg.');
+      window.location.href='index.php';</script>";
+    }else{
+      $title = $_POST['title'];
+      $content = $_POST['content'];
+      $image = $_FILES['image']['name'];
 
-    $sql = "INSERT INTO posts(title,content,image,author_id) VALUES (:title,:content,:image,:author_id)";
-    $stmt = $pdo->prepare($sql);
+      move_uploaded_file($_FILES['image']['tmp_name'], $file);
 
-    $stmt->bindValue(':title',$title);
-    $stmt->bindValue(':content',$content);
-    $stmt->bindValue(':image',$image);
-    $stmt->bindValue(':author_id',$_SESSION['user_id']);
+      $sql = "INSERT INTO posts(title,content,image,author_id) VALUES (:title,:content,:image,:author_id)";
+      $stmt = $pdo->prepare($sql);
 
-    $result = $stmt->execute();
+      $stmt->bindValue(':title',$title);
+      $stmt->bindValue(':content',$content);
+      $stmt->bindValue(':image',$image);
+      $stmt->bindValue(':author_id',$_SESSION['user_id']);
 
-    if ($result) {
-      echo "<script>alert('Your post is added successfully.')</script>";
-      header('Location: index.php');
+      $result = $stmt->execute();
+
+      if ($result) {
+        echo "<script>alert('Your post is added successfully.')</script>";
+        header('Location: index.php');
+      }
     }
   }
 }
