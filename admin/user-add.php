@@ -3,24 +3,33 @@
 require 'config/config.php';
 require 'config/auth.php';
 
-
 if (!empty($_POST)) {
-
-  $name = $_POST['name'];
-  $email = $_POST['email'];
-  $password = $_POST['password'];
-
-  if (empty($_POST['admin'])) {
-    $role = 0;
-  }else{
-    $role = 1;
-  }
-
   // Validation
-  if ($name == '' || $email == '' || $password == '') {
-    echo "<script>alert('Blank Data Not Accept.');
-    window.location.href='user.php';</script>";
+  if (empty($_POST['name']) || empty($_POST['email']) || empty($_POST['password']) || ($_POST['password'] && strlen($_POST['password']) < 4)) {
+    if (empty($_POST['name'])) {
+      $nameError = 'Name cannot be Null';
+    }
+    if (empty($_POST['email'])) {
+      $emailError = 'Email cannot be Null';
+    }
+    if (empty($_POST['password'])) {
+      $passwordError = 'Password cannot be Null';
+    }
+    if ($_POST['password'] && strlen($_POST['password']) < 4) {
+      $passwordError = 'Password Length at least 4';
+    }
+
   }else{
+
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    if (empty($_POST['admin'])) {
+      $role = 0;
+    }else{
+      $role = 1;
+    }
 
     $sql = "SELECT * FROM users WHERE email=:email";
     $stmt = $pdo->prepare($sql);
@@ -69,14 +78,17 @@ if (!empty($_POST)) {
                 <div class="card-body">
                   <div class="form-group">
                     <label for="name">Name</label>
+                    <p class="text-danger"><?php echo empty($nameError) ? '' : '*'.$nameError; ?></p>
                     <input type="text" name="name" class="form-control" id="name" required>
                   </div>
                   <div class="form-group">
                     <label for="email">Email</label>
+                    <p class="text-danger"><?php echo empty($emailError) ? '' : '*'.$emailError; ?></p>
                     <input type="text" name="email" class="form-control" id="email" required>
                   </div>
                   <div class="form-group">
                     <label for="password">Password</label>
+                    <p class="text-danger"><?php echo empty($passwordError) ? '' : '*'.$passwordError; ?></p>
                     <input type="password" id="password" name="password" class="form-control" required>
                   </div>
                   <div class="form-group">

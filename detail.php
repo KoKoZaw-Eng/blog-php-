@@ -13,30 +13,25 @@ if (!empty($_GET)) {
   $result = $stmt->fetchAll();
 
   if (!empty($_POST)) {
-    $content = $_POST['comment'];
+    if (empty($_POST['comment'])) {
+      $commentError = 'Comment canot be null';
+    }else{
+      $content = $_POST['comment'];
 
-    $sql = "INSERT INTO comments(content,author_id,post_id) VALUES (:content,:author_id,:post_id)";
-    $stmt = $pdo->prepare($sql);
+      $sql = "INSERT INTO comments(content,author_id,post_id) VALUES (:content,:author_id,:post_id)";
+      $stmt = $pdo->prepare($sql);
 
-    $stmt->bindValue(':content',$content);
-    $stmt->bindValue(':author_id',$_SESSION['user_id']);
-    $stmt->bindValue(':post_id',$id);
-    
-    $result = $stmt->execute();
-    if ($result) {
-      header('Location: detail.php?id='.$id);
+      $stmt->bindValue(':content',$content);
+      $stmt->bindValue(':author_id',$_SESSION['user_id']);
+      $stmt->bindValue(':post_id',$id);
+
+      $result = $stmt->execute();
+      if ($result) {
+        header('Location: detail.php?id='.$id);
+      }
     }
   }
 }
-
-// if ($comResult) {
-//   $author_id = $comResult[0]['author_id'];
-//   $sql = "SELECT * FROM users WHERE id=$author_id";
-//   $author = $pdo->prepare($sql);
-//   $author->execute();
-//   $auResult = $author->fetchAll();
-// }
-
 
  ?>
 
@@ -130,6 +125,7 @@ if (!empty($_GET)) {
         <div class="card-footer">
           <form action="" method="post">
             <div class="img-push">
+              <p class="text-danger"><?php echo empty($commentError) ? '' : '*'.$commentError; ?></p>
               <input type="text" name="comment" class="form-control form-control-sm" placeholder="Press enter to post comment">
             </div>
           </form>

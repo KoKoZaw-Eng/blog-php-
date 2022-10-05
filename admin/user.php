@@ -23,7 +23,7 @@ if (!empty($_POST['search'])) {
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title text-success">User Management</h3>
+                <h3 class="card-title text-secondary">User Management</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">

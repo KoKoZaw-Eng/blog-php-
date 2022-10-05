@@ -39,8 +39,8 @@ if (!empty($_POST)) {
       $result = $stmt->execute();
 
       if ($result) {
-        echo "<script>alert('Your post is added successfully.')</script>";
-        header('Location: index.php');
+        echo "<script>alert('Your post is added successfully.');
+        window.location.href='index.php';</script>";
       }
     }
   }
@@ -65,17 +65,17 @@ if (!empty($_POST)) {
                 <div class="card-body">
                   <div class="form-group">
                     <label for="title">Title</label>
-                    <p class="text-danger"><?php echo empty($titleError) ? '' : $titleError; ?></p>
+                    <p class="text-danger"><?php echo empty($titleError) ? '' : '*'.$titleError; ?></p>
                     <input type="text" name="title" class="form-control" id="title" required>
                   </div>
                   <div class="form-group">
                     <label for="content">Content</label>
-                    <p class="text-danger"><?php echo empty($contentError) ? '' : $contentError; ?></p>
+                    <p class="text-danger"><?php echo empty($contentError) ? '' : '*'.$contentError; ?></p>
                     <textarea name="content" id="content" class="form-control" required></textarea>
                   </div>
                   <div>
                     <label for="image">Image</label><br>
-                    <p class="text-danger"><?php echo empty($imageError) ? '' : $imageError; ?></p>
+                    <p class="text-danger"><?php echo empty($imageError) ? '' : '*'.$imageError; ?></p>
                     <input type="file" id="image" name="image" required>
                   </div>
                 </div>
