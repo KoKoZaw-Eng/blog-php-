@@ -23,7 +23,7 @@ if (!empty($_POST)) {
 
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user['role'] == 1 && ($user['password'] == $password)) {
+    if ($user['role'] == 1 && password_verify($password,$user['password'])) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_name'] = $user['name'];
         $_SESSION['user_role'] = $user['role'];
