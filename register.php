@@ -19,8 +19,8 @@ if (!empty($_POST)) {
       $passwordError = 'Password Length at least 4';
     }
   }else{
-    $name = $_POST['name'];
-    $email = $_POST['email'];
+    $name = escape($_POST['name']);
+    $email = escape($_POST['email']);
     $password = password_hash($_POST['password'],PASSWORD_DEFAULT);
     $role = 0;
 

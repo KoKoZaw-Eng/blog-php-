@@ -3,6 +3,7 @@
 session_start();
 require 'config/config.php';
 require 'config/auth.php';
+require 'config/common.php';
 
 if (!empty($_POST['search'])) {
   setcookie('search', $_POST['search'], time() + (86400 * 30), "/"); // 86400 = 1 day
@@ -96,8 +97,8 @@ if (!empty($_POST['search'])) {
                       foreach ($result as $value) { ?>
                         <tr>
                           <td><?php echo $i; ?></td>
-                          <td><?php echo $value['title']; ?></td>
-                          <td><?php echo substr($value['content'], 0, 100); ?></td>
+                          <td><?php echo escape($value['title']); ?></td>
+                          <td><?php echo escape(substr($value['content'], 0, 100)); ?></td>
                           <td><a href="edit.php?id=<?php echo $value['id']; ?>" type="button" class="btn btn-warning">Edit</a>
                           </td>
                           <td><a href="del.php?id=<?php echo $value['id']; ?>"

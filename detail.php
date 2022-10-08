@@ -63,7 +63,7 @@ if (!empty($_GET)) {
       <!-- Box Comment -->
       <div class="card card-widget">
         <div class="card-header">
-          <h1 class="h4 text-center"><?php echo $result[0]['title']; ?>
+          <h1 class="h4 text-center"><?php echo escape($result[0]['title']); ?>
           <div class="float-left">
             <a class="btn btn-secondary" href="index.php">Back</a>
           </div>
@@ -76,7 +76,7 @@ if (!empty($_GET)) {
           <img class="img-fluid pad" src="admin/images/<?php echo $result[0]['image']; ?>" alt="Photo">
 
           <div><br>
-            <p><?php echo $result[0]['content'] ?></p>
+            <p><?php echo escape($result[0]['content']); ?></p>
           </div><br>
           <h1 class="h3">Comments</h1><hr>
         </div>
@@ -111,10 +111,10 @@ if (!empty($_GET)) {
               foreach ($comResult as $key => $value) { ?>
                 <div>
                   <span class="username">
-                    <?php echo $auResult[$key][0]['name']; ?>
+                    <?php echo escape($auResult[$key][0]['name']); ?>
                     <span class="text-muted float-right"><?php echo $value['created_at']; ?></span>
                   </span><!-- /.username -->
-                  <?php echo $value['content']; ?>
+                  <?php echo escape($value['content']); ?>
                 </div>
                 <!-- /.comment-text -->
             <?php

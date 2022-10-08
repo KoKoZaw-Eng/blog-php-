@@ -99,12 +99,12 @@ if (!empty($_POST)) {
                   <div class="form-group">
                     <label for="name">Name</label>
                     <p class="text-danger"><?php echo empty($nameError) ? '' : '*'.$nameError; ?></p>
-                    <input type="text" name="name" value="<?php echo $result[0]['name']; ?>" class="form-control" id="name" required>
+                    <input type="text" name="name" value="<?php echo escape($result[0]['name']); ?>" class="form-control" id="name" required>
                   </div>
                   <div class="form-group">
                     <label for="email">Email</label>
                     <p class="text-danger"><?php echo empty($emailError) ? '' : '*'.$emailError; ?></p>
-                    <input type="text" name="email" value="<?php echo $result[0]['email']; ?>" class="form-control" id="email" required>
+                    <input type="text" name="email" value="<?php echo escape($result[0]['email']); ?>" class="form-control" id="email" required>
                   </div>
                   <input type="hidden" name="email1" value="<?php echo $result[0]['email']; ?>">
                   <div class="form-group">

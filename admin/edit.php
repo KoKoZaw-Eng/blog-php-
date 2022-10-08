@@ -87,12 +87,12 @@ if (!empty($_POST)) {
                     <label for="title">Title</label>
                     <p class="text-danger"><?php echo empty($titleError) ? '' : '*'.$titleError; ?></p>
                     <input type="text" name="title" class="form-control" id="title" 
-                    value="<?php echo $result[0]['title']; ?>" required>
+                    value="<?php echo escape($result[0]['title']); ?>" required>
                   </div>
                   <div class="form-group">
                     <label for="content">Content</label>
                     <p class="text-danger"><?php echo empty($contentError) ? '' : '*'.$contentError; ?></p>
-                    <textarea name="content" id="content" class="form-control" required><?php echo $result[0]['content']; ?></textarea>
+                    <textarea name="content" id="content" class="form-control" required><?php echo escape($result[0]['content']); ?></textarea>
                   </div>
                   <div>
                     <label for="image">Image</label>
