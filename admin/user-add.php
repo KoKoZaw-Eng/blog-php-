@@ -1,7 +1,9 @@
 <?php 
 
+session_start();
 require 'config/config.php';
 require 'config/auth.php';
+require 'config/common.php';
 
 if (!empty($_POST)) {
   // Validation
@@ -75,6 +77,7 @@ if (!empty($_POST)) {
               <!-- /.card-header -->
               <!-- form start -->
               <form class="form-group" action="user-add.php" method="post">
+                <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">
                 <div class="card-body">
                   <div class="form-group">
                     <label for="name">Name</label>

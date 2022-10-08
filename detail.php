@@ -1,6 +1,9 @@
 <?php 
+
+session_start();
 require 'config.php';
 require 'auth.php';
+require 'common.php';
 
 
 if (!empty($_GET)) {
@@ -124,6 +127,7 @@ if (!empty($_GET)) {
         <!-- /.card-footer -->
         <div class="card-footer">
           <form action="" method="post">
+            <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">
             <div class="img-push">
               <p class="text-danger"><?php echo empty($commentError) ? '' : '*'.$commentError; ?></p>
               <input type="text" name="comment" class="form-control form-control-sm" placeholder="Press enter to post comment">

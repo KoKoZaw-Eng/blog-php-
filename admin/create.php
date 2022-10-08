@@ -1,7 +1,9 @@
 <?php 
 
+session_start();
 require 'config/config.php';
 require 'config/auth.php';
+require 'config/common.php';
 
 if (!empty($_POST)) {
   if (empty($_POST['title']) || empty($_POST['content']) || empty($_FILES['image'])) {
@@ -63,6 +65,7 @@ if (!empty($_POST)) {
               <!-- form start -->
               <form class="form-group" action="create.php" method="post" enctype="multipart/form-data">
                 <div class="card-body">
+                  <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">
                   <div class="form-group">
                     <label for="title">Title</label>
                     <p class="text-danger"><?php echo empty($titleError) ? '' : '*'.$titleError; ?></p>

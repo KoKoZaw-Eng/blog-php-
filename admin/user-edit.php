@@ -1,7 +1,9 @@
 <?php 
 
+session_start();
 require 'config/config.php';
 require 'config/auth.php';
+require 'config/common.php';
 
 // echo $_POST['password'];
 // echo strlen($_POST['password']);
@@ -91,6 +93,7 @@ if (!empty($_POST)) {
                ?>
               <!-- form start -->
               <form class="form-group" action="user-edit.php" method="post">
+                <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">
                 <div class="card-body">
                   <input type="hidden" name="id" value="<?php echo $result[0]['id']; ?>">
                   <div class="form-group">
