@@ -67,7 +67,7 @@ if (!empty($_POST)) {
 }
  ?>
 
-<?php include 'header.html'; ?><!-- Header Section -->
+<?php include 'header.php'; ?><!-- Header Section -->
 
     <!-- Main content -->
     <section class="content">

@@ -47,6 +47,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="navbar-search-block">
           <form class="form-inline"
           action="<?php echo $page == 'index.php' ? 'index.php':'user.php'; ?>" method="post">
+          <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">
             <div class="input-group input-group-sm">
               <input class="form-control form-control-navbar" name="search" type="search" placeholder="Search" aria-label="Search">
               <div class="input-group-append">
