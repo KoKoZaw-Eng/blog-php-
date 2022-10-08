@@ -1,15 +1,29 @@
 <?php 
+
+session_start();
 require 'config.php';
+require 'common.php';
 
 if (!empty($_POST)) {
-  $name = $_POST['name'];
-  $email = $_POST['email'];
-  $password = $_POST['password'];
-  $role = 0;
-
-  if ($email === '' || $password === '') {
-    echo "<script>alert('Balnk Data not accept. Please Try Again.')</script>";
+  if (empty($_POST['name']) || empty($_POST['email']) || empty($_POST['password']) || ($_POST['password'] && strlen($_POST['password']) < 4)) {
+    if (empty($_POST['name'])) {
+      $nameError = 'Name cannot be Null';
+    }
+    if (empty($_POST['email'])) {
+      $emailError = 'Email cannot be Null';
+    }
+    if (empty($_POST['password'])) {
+      $passwordError = 'Password cannot be Null';
+    }
+    if ($_POST['password'] && strlen($_POST['password']) < 4) {
+      $passwordError = 'Password Length at least 4';
+    }
   }else{
+    $name = escape($_POST['name']);
+    $email = escape($_POST['email']);
+    $password = password_hash($_POST['password'],PASSWORD_DEFAULT);
+    $role = 0;
+
     $sql = "SELECT * FROM users WHERE email=:email";
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':email',$email);
@@ -68,6 +82,8 @@ if (!empty($_POST)) {
       <p class="login-box-msg">Register a new membership</p>
 
       <form action="register.php" method="post">
+        <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">
+        <p class="text-danger"><?php echo empty($nameError) ? '' : '*'.$nameError; ?></p>
         <div class="input-group mb-3">
           <input type="text" name="name" class="form-control" placeholder="Full name" required>
           <div class="input-group-append">
@@ -76,6 +92,7 @@ if (!empty($_POST)) {
             </div>
           </div>
         </div>
+        <p class="text-danger"><?php echo empty($emailError) ? '' : '*'.$emailError; ?></p>
         <div class="input-group mb-3">
           <input type="email" name="email" class="form-control" placeholder="Email" required>
           <div class="input-group-append">
@@ -84,6 +101,7 @@ if (!empty($_POST)) {
             </div>
           </div>
         </div>
+        <p class="text-danger"><?php echo empty($passwordError) ? '' : '*'.$passwordError; ?></p>
         <div class="input-group mb-3">
           <input type="password" name="password" class="form-control" placeholder="Password" required>
           <div class="input-group-append">

@@ -1,7 +1,9 @@
 <?php
 
+session_start();
 require 'config/config.php';
 require 'config/auth.php';
+require 'config/common.php';
 
 if (!empty($_POST['search'])) {
   setcookie('search', $_POST['search'], time() + (86400 * 30), "/"); // 86400 = 1 day
@@ -23,7 +25,7 @@ if (!empty($_POST['search'])) {
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title text-success">User Management</h3>
+                <h3 class="card-title text-secondary">User Management</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -96,8 +98,8 @@ if (!empty($_POST['search'])) {
                       foreach ($result as $value) { ?>
                         <tr>
                           <td><?php echo $i; ?></td>
-                          <td><?php echo $value['name']; ?></td>
-                          <td><?php echo $value['email']; ?></td>
+                          <td><?php echo escape($value['name']); ?></td>
+                          <td><?php echo escape($value['email']); ?></td>
                           <td><?php echo $value['password']; ?></td>
                           <td>
                             <?php 

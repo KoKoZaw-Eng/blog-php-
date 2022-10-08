@@ -1,6 +1,10 @@
 <?php 
+
+session_start();
 require 'config.php';
 require 'auth.php';
+require 'common.php';
+
 
  ?>
 
@@ -10,6 +14,8 @@ require 'auth.php';
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Home</title>
+  <!-- Google Search favicon to show -->
+  <link rel="shortcut icon" href="dist/img/fav.ico">
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -64,7 +70,7 @@ require 'auth.php';
           <!-- Box Comment -->
           <div class="card card-widget">
             <div class="card-header text-secondary">
-              <h1 class="h4 text-center"><?php echo $value['title']; ?></h1>
+              <h1 class="h4 text-center"><?php echo escape($value['title']); ?></h1>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -72,7 +78,7 @@ require 'auth.php';
                 <img class="img-fluid pad" src="admin/images/<?php echo $value['image']; ?>" alt="Photo">
               </a>
 
-              <p><?php echo substr($value['content'], 0,90) ?>
+              <p><?php echo escape(substr($value['content'], 0,90)); ?>
                 <a class="float-right" href="detail.php?id=<?php echo $value['id']; ?>">More Detail...</a>
               </p>
             </div>

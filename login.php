@@ -1,16 +1,23 @@
 <?php 
 
-require 'config.php';
 session_start();
+require 'config.php';
+require 'common.php';
+
 
 
 if (!empty($_POST)) { 
-  $email = $_POST['email'];
-  $password = $_POST['password'];
-
-  if ($email === '' || $password === '') {
-    echo "<script>alert('Balnk Data not accept. Please Try Again.')</script>";
+  if (empty($_POST['email']) || empty($_POST['password'])) {
+    if (empty($_POST['email'])) {
+      $emailError = 'Email cannot be Null';
+    }
+    if (empty($_POST['password'])) {
+      $passwordError = 'Password cannot be Null';
+    }
   }else{
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
     $sql = "SELECT * FROM users WHERE email=:email";
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':email',$email);
@@ -18,21 +25,16 @@ if (!empty($_POST)) {
 
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user) {
-      if ($user['password'] === $password) {
+    if (password_verify($password,$user['password'])) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_name'] = $user['name'];
         $_SESSION['user_role'] = $user['role'];
         $_SESSION['logged_in'] = time();
 
         header('Location: index.php');
-      }
     }else{
       echo "<script>alert('Incorrect Email or Password. Please Try Again.')</script>";
     }
-  // print'<pre>';
-  // print_r($user);
-  // exit();
   }
 
 }
@@ -66,7 +68,9 @@ if (!empty($_POST)) {
     <div class="card-body">
       <p class="login-box-msg">Sign in to start your session</p>
 
-      <form action="login.php" method="post">
+      <form action="" method="post">
+        <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">
+        <p class="text-danger"><?php echo empty($emailError) ? '' : '*'.$emailError; ?></p>
         <div class="input-group mb-3">
           <input type="email" name="email" class="form-control" placeholder="Email" required>
           <div class="input-group-append">
@@ -75,6 +79,7 @@ if (!empty($_POST)) {
             </div>
           </div>
         </div>
+        <p class="text-danger"><?php echo empty($passwordError) ? '' : '*'.$passwordError; ?></p>
         <div class="input-group mb-3">
           <input type="password" name="password" class="form-control" placeholder="Password" required>
           <div class="input-group-append">

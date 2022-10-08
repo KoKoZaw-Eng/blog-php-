@@ -1,41 +1,40 @@
 <?php 
+
+session_start();
 require 'config.php';
 require 'auth.php';
+require 'common.php';
 
 
 if (!empty($_GET)) {
   $id = $_GET['id'];
-  $sql = "SELECT * FROM posts WHERE id=$id";
+  $sql = "SELECT * FROM posts WHERE id=:id";
   $stmt = $pdo->prepare($sql);
+  $stmt->bindValue(':id',$id);
   $stmt->execute();
 
   $result = $stmt->fetchAll();
 
   if (!empty($_POST)) {
-    $content = $_POST['comment'];
+    if (empty($_POST['comment'])) {
+      $commentError = 'Comment canot be null';
+    }else{
+      $content = $_POST['comment'];
 
-    $sql = "INSERT INTO comments(content,author_id,post_id) VALUES (:content,:author_id,:post_id)";
-    $stmt = $pdo->prepare($sql);
+      $sql = "INSERT INTO comments(content,author_id,post_id) VALUES (:content,:author_id,:post_id)";
+      $stmt = $pdo->prepare($sql);
 
-    $stmt->bindValue(':content',$content);
-    $stmt->bindValue(':author_id',$_SESSION['user_id']);
-    $stmt->bindValue(':post_id',$id);
-    
-    $result = $stmt->execute();
-    if ($result) {
-      header('Location: detail.php?id='.$id);
+      $stmt->bindValue(':content',$content);
+      $stmt->bindValue(':author_id',$_SESSION['user_id']);
+      $stmt->bindValue(':post_id',$id);
+
+      $result = $stmt->execute();
+      if ($result) {
+        header('Location: detail.php?id='.$id);
+      }
     }
   }
 }
-
-// if ($comResult) {
-//   $author_id = $comResult[0]['author_id'];
-//   $sql = "SELECT * FROM users WHERE id=$author_id";
-//   $author = $pdo->prepare($sql);
-//   $author->execute();
-//   $auResult = $author->fetchAll();
-// }
-
 
  ?>
 
@@ -64,7 +63,7 @@ if (!empty($_GET)) {
       <!-- Box Comment -->
       <div class="card card-widget">
         <div class="card-header">
-          <h1 class="h4 text-center"><?php echo $result[0]['title']; ?>
+          <h1 class="h4 text-center"><?php echo escape($result[0]['title']); ?>
           <div class="float-left">
             <a class="btn btn-secondary" href="index.php">Back</a>
           </div>
@@ -77,15 +76,16 @@ if (!empty($_GET)) {
           <img class="img-fluid pad" src="admin/images/<?php echo $result[0]['image']; ?>" alt="Photo">
 
           <div><br>
-            <p><?php echo $result[0]['content'] ?></p>
+            <p><?php echo escape($result[0]['content']); ?></p>
           </div><br>
           <h1 class="h3">Comments</h1><hr>
         </div>
         <!-- /.card-body -->
 
         <?php 
-        $sql = "SELECT * FROM comments WHERE post_id=$id";
+        $sql = "SELECT * FROM comments WHERE post_id=:id";
         $comm = $pdo->prepare($sql);
+        $comm->bindValue(':id',$id);
         $comm->execute();
         $comResult = $comm->fetchAll();
         // print'<pre>';
@@ -111,10 +111,10 @@ if (!empty($_GET)) {
               foreach ($comResult as $key => $value) { ?>
                 <div>
                   <span class="username">
-                    <?php echo $auResult[$key][0]['name']; ?>
+                    <?php echo escape($auResult[$key][0]['name']); ?>
                     <span class="text-muted float-right"><?php echo $value['created_at']; ?></span>
                   </span><!-- /.username -->
-                  <?php echo $value['content']; ?>
+                  <?php echo escape($value['content']); ?>
                 </div>
                 <!-- /.comment-text -->
             <?php
@@ -127,7 +127,9 @@ if (!empty($_GET)) {
         <!-- /.card-footer -->
         <div class="card-footer">
           <form action="" method="post">
+            <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">
             <div class="img-push">
+              <p class="text-danger"><?php echo empty($commentError) ? '' : '*'.$commentError; ?></p>
               <input type="text" name="comment" class="form-control form-control-sm" placeholder="Press enter to post comment">
             </div>
           </form>
