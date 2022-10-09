@@ -8,7 +8,7 @@ require 'config/common.php';
 if (!empty($_POST['search'])) {
   setcookie('search', $_POST['search'], time() + (86400 * 30), "/"); // 86400 = 1 day
 }else{
-  if (!empty($_GET['pageno'])) {
+  if (!empty($_GET['pageno']) || $page != 'index.php') {
     unset($_COOKIE['search']); 
     setcookie('search', null, -1, '/'); 
   }

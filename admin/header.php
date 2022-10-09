@@ -120,7 +120,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </a>
           </li>
           <li class="nav-item">
-            <a href="../index.php" class="nav-link">
+            <a href="../index.php" target="_blank" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Preview Blog
